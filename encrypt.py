@@ -7,6 +7,8 @@ def lcm(a, b):
 def modinv(a, m):
     m0, x0, x1 = m, 0, 1
     while a > 1:
+        if m == 0:
+            return None  # This would mean e and λ(n) are not coprime
         q = a // m
         m, a = a % m, m
         x0, x1 = x1 - q * x0, x0
@@ -18,19 +20,24 @@ def encrypt(message, public_key):
     encrypted_number = pow(message_number, e, n)
     return encrypted_number
 
+# User inputs
+p = int(input("Enter a prime number for p (e.g., 17): "))  # Example: 17
+q = int(input("Enter a different prime number for q (e.g., 19): "))  # Example: 19
+e = int(input("Enter public exponent e (e.g., 3): "))  # Example: 3
+message = input("Enter a message to encrypt (e.g., 'Hello World'): ")  # Example: Hello World
+
 # RSA Setup
-p = 61
-q = 53
 n = p * q
 lam_n = lcm(p-1, q-1)
-e = 17
 d = modinv(e, lam_n)
 
-# Encrypt a message
-public_key = (n, e)
-message = "Hello Arafat"
-encrypted_message = encrypt(message, public_key)
+if d is None:
+    print("Public exponent e is not coprime with λ(n). Please choose a different e.")
+else:
+    # Encrypt the message
+    public_key = (n, e)
+    encrypted_message = encrypt(message, public_key)
 
-# Write to cipher.txt
-with open("cipher.txt", "w") as file:
-    file.write(f"C: {encrypted_message}\np: {p}\nq: {q}\nN: {n}")
+    # Write to cipher.txt
+    with open("cipher.txt", "w") as file:
+        file.write(f"C: {encrypted_message}\np: {p}\nq: {q}\nN: {n}\nd: {d}")
