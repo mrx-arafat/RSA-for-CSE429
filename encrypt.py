@@ -21,10 +21,10 @@ def encrypt(message, public_key):
     return encrypted_number
 
 # User inputs
-p = int(input("Enter a prime number for p (e.g., 17): "))  # Example: 17
-q = int(input("Enter a different prime number for q (e.g., 19): "))  # Example: 19
-e = int(input("Enter public exponent e (e.g., 3): "))  # Example: 3
-message = input("Enter a message to encrypt (e.g., 'Hello World'): ")  # Example: Hello World
+p = int(input("Enter a prime number for p (e.g., 17): "))
+q = int(input("Enter a different prime number for q (e.g., 19): "))
+e = int(input("Enter public exponent e (e.g., 65537): "))
+message = input("Enter a message to encrypt: ")
 
 # RSA Setup
 n = p * q
@@ -38,6 +38,6 @@ else:
     public_key = (n, e)
     encrypted_message = encrypt(message, public_key)
 
-    # Write to cipher.txt
+    # Write to cipher.txt with numeric C value
     with open("cipher.txt", "w") as file:
-        file.write(f"C: {encrypted_message}\np: {p}\nq: {q}\nN: {n}\nd: {d}")
+        file.write(f"C: {encrypted_message}\np: {p}\nq: {q}\nN: {n}\nd: {d}\ne: {e}")
